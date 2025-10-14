@@ -1,8 +1,15 @@
+// /src/App.js (Updated)
+
 import React, { useState } from 'react';
 import Header from './components/layout/Header';
 import HazardSelector from './components/controls/HazardSelector';
+import HistoricalSlider from './components/controls/HistoricalSlider';
+import FilterMenu from './components/controls/FilterMenu';
 import KeyMetrics from './components/datadisplay/KeyMetrics';
 import InteractiveMap from './components/map/InteractiveMap';
+import AlertHistoryLog from './components/alerts/AlertHistoryLog';
+import ReportButton from './components/alerts/ReportButton';
+
 import './assets/styles.css';
 
 function App() {
@@ -16,19 +23,24 @@ function App() {
       <aside className="sidebar sidebar-left">
         <h2>Controls</h2>
         <HazardSelector selectedHazard={hazard} onHazardChange={setHazard} />
-        {/* Other controls like HistoricalSlider would go here */}
+        <HistoricalSlider />
+        <FilterMenu />
+        <ReportButton currentHazard={hazard} />
       </aside>
 
-      {/* Main Center Pane (Map) */}
-      <main className="main-content">
-        <InteractiveMap selectedHazard={hazard} />
+      {/* Main Center Pane (Map and Alert Log) */}
+      <main className="main-content" style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ flex: 1, minHeight: 0 }}>
+          <InteractiveMap selectedHazard={hazard} />
+        </div>
+        <AlertHistoryLog />
       </main>
 
       {/* Right Sidebar (Data Details) */}
       <aside className="sidebar sidebar-right">
         <h2>Data Details</h2>
         <KeyMetrics selectedHazard={hazard} />
-        {/* ImpactSummary and other details would go here */}
+        {/* ImpactSummary etc. would go here */}
       </aside>
     </div>
   );
