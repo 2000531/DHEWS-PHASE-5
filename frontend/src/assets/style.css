@@ -1,0 +1,57 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f0f2f5;
+}
+
+/* Main App Layout using CSS Grid */
+.app-container {
+  display: grid;
+  grid-template-columns: 280px 1fr 300px; /* Left Sidebar, Main Content, Right Sidebar */
+  grid-template-rows: 60px 1fr; /* Header, Content Area */
+  grid-template-areas:
+    "header header header"
+    "sidebar-left main sidebar-right";
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Simple component styling */
+.header {
+  grid-area: header;
+  background-color: #001529;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-bottom: 1px solid #444;
+}
+
+.sidebar {
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.sidebar-left { grid-area: sidebar-left; }
+.sidebar-right { grid-area: sidebar-right; }
+.main-content { grid-area: main; }
+
+.map-container {
+  height: 100%;
+  width: 100%;
+}
+
+.control-group {
+  margin-bottom: 25px;
+}
+.control-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
