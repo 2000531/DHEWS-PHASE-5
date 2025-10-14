@@ -1,0 +1,26 @@
+/* /src/components/alerts/Alerts.css */
+.alert-log-container {
+  margin-top: 20px;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  font-weight: bold;
+}
+
+/* Color-code severity */
+.severity-warning { color: #d9534f; font-weight: bold; }
+.severity-alert { color: #f0ad4e; font-weight: bold; }
+.severity-watch { color: #5bc0de; font-weight: bold; }
