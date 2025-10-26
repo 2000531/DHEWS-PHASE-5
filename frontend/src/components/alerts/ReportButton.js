@@ -1,5 +1,3 @@
-// /src/components/alerts/ReportButton.js
-
 import React from 'react';
 import { generateReport } from '../../services/api';
 
