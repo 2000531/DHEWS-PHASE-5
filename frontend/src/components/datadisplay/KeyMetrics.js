@@ -1,5 +1,3 @@
-// /src/components/datadisplay/KeyMetrics.js (Updated)
-
 import React from 'react';
 
 // This data now only contains the raw metrics, not the interpretation
