@@ -1,5 +1,3 @@
-// /src/components/alerts/AlertHistoryLog.js
-
 import React, { useState, useEffect } from 'react';
 import { getAlerts } from '../../services/api';
 import './Alerts.css'; // We'll create a small CSS file for this
