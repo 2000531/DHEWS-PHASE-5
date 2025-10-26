@@ -1,5 +1,3 @@
-// /src/components/controls/HistoricalSlider.js
-
 import React, { useState } from 'react';
 
 function HistoricalSlider() {
