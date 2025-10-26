@@ -1,5 +1,3 @@
-// /src/services/api.js
-
 /**
  * MOCK DATA for Alerts
  */
