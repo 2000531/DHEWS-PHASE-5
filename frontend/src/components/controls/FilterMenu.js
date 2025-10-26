@@ -1,5 +1,3 @@
-// /src/components/controls/FilterMenu.js
-
 import React from 'react';
 
 function FilterMenu() {
