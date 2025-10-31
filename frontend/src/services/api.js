@@ -1,57 +1,65 @@
-// src/services/api.js
+/**
+ * MOCK DATA for Alerts
+ */
+const mockAlerts = [
+  { id: 1, hazard_type: 'Drought', severity: 'Alert', location: 'Sub-Region A', issue_time: '2025-10-14 10:00 EAT' },
+  { id: 2, hazard_type: 'Flood', severity: 'Warning', location: 'River Basin X', issue_time: '2025-10-12 15:30 EAT' },
+  { id: 3, hazard_type: 'Drought', severity: 'Watch', location: 'Sub-Region B', issue_time: '2025-10-11 09:00 EAT' },
+];
 
-// Mock metrics for each hazard
-const mockData = {
-  Drought: [
-    { name: 'Soil Moisture', value: 18, unit: '%', severity: 'Warning' },
-    { name: 'Precipitation', value: 12, unit: 'mm', severity: 'Alert' },
-    { name: 'Temperature', value: 36, unit: '°C', severity: 'Watch' },
-  ],
-  Flood: [
-    { name: 'River Level', value: 4.6, unit: 'm', severity: 'Warning' },
-    { name: 'Rainfall', value: 120, unit: 'mm', severity: 'Alert' },
-    { name: 'Soil Saturation', value: 88, unit: '%', severity: 'Warning' },
-  ],
+/**
+ * Fetches the list of active and recent alerts.
+ * @returns {Promise<Array>} A promise that resolves to an array of alert objects.
+ */
+export const getAlerts = async () => {
+  console.log("Fetching alerts from API...");
+  await new Promise(resolve => setTimeout(resolve, 500));
+  return mockAlerts;
 };
 
-// Mock regions for the map
-export const getRegions = async () => {
-  return [
-    { id: 1, name: 'Nairobi County', risk: 'Moderate', coords: [-1.2921, 36.8219] },
-    { id: 2, name: 'Mombasa County', risk: 'High', coords: [-4.0435, 39.6682] },
-    { id: 3, name: 'Kisumu County', risk: 'Low', coords: [-0.0917, 34.7679] },
-    { id: 4, name: 'Eldoret Region', risk: 'Severe', coords: [0.5143, 35.2698] },
-  ];
+/**
+ * Generates a briefing report PDF.
+ * @param {object} reportData - The current view data (hazard, date, map state).
+ */
+export const generateReport = (reportData) => {
+    console.log("Generating report with data:", reportData);
+    alert("Report generation initiated! A PDF would be downloaded in a real application.");
 };
 
-
-// ✅ This is what App.js expects
-export const getMetricsForHazard = async (hazard) => {
-  return mockData[hazard] || [];
-};
-
-// Mock alerts history
-export const getAlerts = async (hazard) => {
-  return [
-    { id: 1, region: 'Region B', severity: 'Alert', date: '2025-10-29' },
-    { id: 2, region: 'Region C', severity: 'Warning', date: '2025-10-30' },
-  ];
-};
-
-// Simple AI summary generator
-export const getAIAnalysis = async (hazard) => {
-  const metrics = await getMetricsForHazard(hazard);
-  if (!metrics || metrics.length === 0) {
-    return { summary: `No data available for ${hazard}.` };
+/**
+ * MOCK AI ANALYSIS
+ */
+const mockAIResponses = {
+  Drought: {
+    summary: "The current Vegetation Condition Index (VCI) of 25.3 indicates moderate to severe drought conditions.",
+    impact: "Expect reduced crop yields and stress on livestock. Water rationing may be necessary in the most affected agricultural zones.",
+    forecast: "Conditions are expected to persist or slightly worsen over the next 7 days with no significant rainfall predicted.",
+    recommendations: [
+      "Issue a 'Drought Alert' to regional water authorities.",
+      "Prepare water tankers for deployment to critical areas.",
+      "Advise farmers to implement water conservation techniques."
+    ]
+  },
+  Flood: {
+    summary: "The Standardized Precipitation Index (SPI-1) value of 1.8 signifies extremely moist conditions and a high potential for short-term flooding.",
+    impact: "Flash floods are likely in low-lying areas and regions with poor drainage. Minor rivers may overflow their banks. Risk of damage to infrastructure like rural roads and bridges.",
+    forecast: "Heavy rainfall is forecast to continue for the next 48 hours, increasing the flood risk to 'Warning' level.",
+    recommendations: [
+      "Activate emergency response teams for potential deployment.",
+      "Issue a 'Flood Watch' advisory to the public via SMS and radio.",
+      "Inspect and clear critical drainage infrastructure."
+    ]
   }
+};
 
-  const avg =
-    metrics.reduce((acc, m) => acc + (m.value || 0), 0) / metrics.length;
-  return {
-    summary: `The AI analysis for ${hazard} indicates an average metric value of ${avg.toFixed(
-      1
-    )}. Severity levels show ${metrics
-      .map((m) => `${m.name}: ${m.severity}`)
-      .join(', ')}.`,
-  };
+/**
+ * Fetches AI-powered analysis for a given hazard and its data.
+ * @param {string} hazard - The type of hazard ('Drought' or 'Flood').
+ * @param {object} metrics - The key data points (e.g., { vci: 25.3 }).
+ * @returns {Promise<object>} A promise that resolves to the AI analysis object.
+ */
+export const getAIAnalysis = async (hazard, metrics) => {
+  console.log(`Requesting AI analysis for ${hazard} with metrics:`, metrics);
+  await new Promise(resolve => setTimeout(resolve, 800));
+  return mockAIResponses[hazard];
 };
