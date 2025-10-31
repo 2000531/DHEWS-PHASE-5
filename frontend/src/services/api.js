@@ -1,4 +1,4 @@
-export const API_BASE = "https://dhews-backend.onrender.com/api";
+export const API_BASE = "https://dhews-phase-5-3.onrender.com/api";
 /**
  * MOCK DATA for Alerts
  */
