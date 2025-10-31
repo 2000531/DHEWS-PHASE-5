@@ -1,65 +1,78 @@
-/**
- * MOCK DATA for Alerts
- */
-const mockAlerts = [
-  { id: 1, hazard_type: 'Drought', severity: 'Alert', location: 'Sub-Region A', issue_time: '2025-10-14 10:00 EAT' },
-  { id: 2, hazard_type: 'Flood', severity: 'Warning', location: 'River Basin X', issue_time: '2025-10-12 15:30 EAT' },
-  { id: 3, hazard_type: 'Drought', severity: 'Watch', location: 'Sub-Region B', issue_time: '2025-10-11 09:00 EAT' },
-];
+// /src/services/api.js
+
+const API_BASE_URL = 'http://localhost:5000/mock_api'; // Assuming your Blueprint is registered under /mock_api
 
 /**
- * Fetches the list of active and recent alerts.
- * @returns {Promise<Array>} A promise that resolves to an array of alert objects.
+ * Helper function to handle the fetch request and JSON parsing.
+ * @param {string} endpoint - The path (e.g., '/alerts').
+ * @returns {Promise<any>} The parsed JSON data.
  */
-export const getAlerts = async () => {
-  console.log("Fetching alerts from API...");
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return mockAlerts;
-};
-
-/**
- * Generates a briefing report PDF.
- * @param {object} reportData - The current view data (hazard, date, map state).
- */
-export const generateReport = (reportData) => {
-    console.log("Generating report with data:", reportData);
-    alert("Report generation initiated! A PDF would be downloaded in a real application.");
-};
-
-/**
- * MOCK AI ANALYSIS
- */
-const mockAIResponses = {
-  Drought: {
-    summary: "The current Vegetation Condition Index (VCI) of 25.3 indicates moderate to severe drought conditions.",
-    impact: "Expect reduced crop yields and stress on livestock. Water rationing may be necessary in the most affected agricultural zones.",
-    forecast: "Conditions are expected to persist or slightly worsen over the next 7 days with no significant rainfall predicted.",
-    recommendations: [
-      "Issue a 'Drought Alert' to regional water authorities.",
-      "Prepare water tankers for deployment to critical areas.",
-      "Advise farmers to implement water conservation techniques."
-    ]
-  },
-  Flood: {
-    summary: "The Standardized Precipitation Index (SPI-1) value of 1.8 signifies extremely moist conditions and a high potential for short-term flooding.",
-    impact: "Flash floods are likely in low-lying areas and regions with poor drainage. Minor rivers may overflow their banks. Risk of damage to infrastructure like rural roads and bridges.",
-    forecast: "Heavy rainfall is forecast to continue for the next 48 hours, increasing the flood risk to 'Warning' level.",
-    recommendations: [
-      "Activate emergency response teams for potential deployment.",
-      "Issue a 'Flood Watch' advisory to the public via SMS and radio.",
-      "Inspect and clear critical drainage infrastructure."
-    ]
+const fetchData = async (endpoint) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`);
+    if (!response.ok) {
+      // Throw an error if the HTTP status is 4xx or 5xx
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  } catch (error) {
+    console.error(`Failed to fetch data from ${endpoint}:`, error);
+    // Return an empty array or throw the error based on application needs
+    return [];
   }
 };
 
 /**
- * Fetches AI-powered analysis for a given hazard and its data.
- * @param {string} hazard - The type of hazard ('Drought' or 'Flood').
- * @param {object} metrics - The key data points (e.g., { vci: 25.3 }).
- * @returns {Promise<object>} A promise that resolves to the AI analysis object.
+ * Fetches the list of all active and recent alerts.
+ * Corresponds to Flask route: GET /alerts
  */
+export const getAlerts = async () => {
+  console.log("Fetching all alerts from Flask backend...");
+  return fetchData("/alerts");
+};
+
+/**
+ * Fetches the list of regions (e.g., for initial map bounds/layers).
+ * Corresponds to Flask route: GET /regions
+ */
+export const getRegions = async () => {
+  console.log("Fetching regions from Flask backend...");
+  return fetchData("/regions");
+};
+
+/**
+ * Fetches the list of alerts filtered by hazard type.
+ * Corresponds to Flask route: GET /alerts/<hazard>
+ */
+export const getAlertsByHazard = async (hazardType) => {
+  console.log(`Fetching alerts filtered by: ${hazardType}`);
+  // Your Flask route handles capitalization, but it's good practice to normalize the input
+  return fetchData(`/alerts/${hazardType.toLowerCase()}`);
+};
+
+/**
+ * Action: Generates a briefing report PDF.
+ * This still needs a proper Flask endpoint to handle the report generation logic.
+ */
+export const generateReport = (reportData) => {
+    console.log("Generating report initiated. (Needs POST /api/reports endpoint in Flask)");
+    alert("Report generation request sent to the backend.");
+    // In a real app, you'd implement a fetch POST call here:
+    /*
+    fetch('/api/reports', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(reportData)
+    });
+    */
+};
+
+// --- AI Analysis Mock Data (Kept for frontend development flow) ---
+
+const mockAIResponses = { /* ... (The mock AI responses you defined previously) ... */ };
+
 export const getAIAnalysis = async (hazard, metrics) => {
-  console.log(`Requesting AI analysis for ${hazard} with metrics:`, metrics);
+  console.log(`Requesting AI analysis for ${hazard}. (Using frontend mock data for now)`);
   await new Promise(resolve => setTimeout(resolve, 800));
   return mockAIResponses[hazard];
 };
