@@ -1,0 +1,19 @@
+from flask import Flask
+from flask_migrate import Migrate
+from flask_cors import CORS
+from flask_socketio import SocketIO
+from config import Config
+from models import db
+from routes import api
+
+app = Flask(__name__)
+app.config.from_object(Config)
+db.init_app(app)
+migrate = Migrate(app, db)
+CORS(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+app.register_blueprint(api, url_prefix="/api")
+
+if __name__ == "__main__":
+    socketio.run(app, debug=True)
