@@ -1,3 +1,4 @@
+export const API_BASE = "https://dhews-backend.onrender.com/api";
 /**
  * MOCK DATA for Alerts
  */
