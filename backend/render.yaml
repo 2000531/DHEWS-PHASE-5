@@ -1,0 +1,16 @@
+# render.yaml
+services:
+  - type: web
+    name: dhews-backend
+    env: python
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    autoDeploy: true
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: SECRET_KEY
+        value: your-secret-key
+      - key: DATABASE_URL
+        value: your-database-url
