@@ -1,28 +1,23 @@
+// src/components/datadisplay/KeyMetrics.js
 import React from 'react';
 
-// This data now only contains the raw metrics, not the interpretation
-const mockData = {
-  Drought: { status: 'Alert', indexName: 'VCI', indexValue: 25.3 },
-  Flood: { status: 'Watch', indexName: 'SPI-1', indexValue: 1.8 }
+const mockMetrics = {
+  Drought: { VCI: 25, SPI: -1.2 },
+  Flood: { FloodIndex: 0.7, Rainfall: 120 },
 };
 
-function KeyMetrics({ selectedHazard }) {
-  const data = mockData[selectedHazard];
+export function getMetricsForHazard(hazard) {
+  return mockMetrics[hazard] || {};
+}
 
+function KeyMetrics({ selectedHazard }) {
+  const metrics = getMetricsForHazard(selectedHazard);
   return (
-    <div className="key-metrics-container">
-      <div className="control-group">
-        <h3>Current {selectedHazard} Status: {data.status}</h3>
-      </div>
-      <div className="control-group">
-        <label>Key Index Value</label>
-        <p style={{ fontSize: '1.5em', fontWeight: 'bold' }}>{data.indexName}: {data.indexValue}</p>
-      </div>
+    <div style={{ marginTop: '10px' }}>
+      <h3>{selectedHazard} Metrics</h3>
+      <pre>{JSON.stringify(metrics, null, 2)}</pre>
     </div>
   );
 }
-
-// We also export the data so App.js can pass it to the AI component
-export const getMetricsForHazard = (hazard) => mockData[hazard];
 
 export default KeyMetrics;

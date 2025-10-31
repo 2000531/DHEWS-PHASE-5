@@ -1,30 +1,35 @@
 import React from 'react';
-import { generateReport } from '../../services/api';
+import jsPDF from 'jspdf';
 
-function ReportButton({ currentHazard, currentDate }) {
-  const handleGenerateReport = () => {
-    // Collect the current state to send to the backend
-    const reportData = {
-      hazard: currentHazard,
-      date: currentDate || new Date().toISOString(),
-      // In a real app, you'd also include map bounds, selected layers, etc.
-    };
-    generateReport(reportData);
+function ReportButton({ currentHazard, alerts }) {
+  const generateReport = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text(`${currentHazard} Alert Report`, 14, 20);
+
+    alerts.forEach((alert, index) => {
+      const y = 30 + index * 25;
+      doc.setFontSize(12);
+      doc.text(`Region: ${alert.region}`, 14, y);
+      doc.text(`Date: ${alert.date}`, 14, y + 6);
+      doc.text(`Severity: ${alert.severity}`, 14, y + 12);
+      doc.text(`Description: ${alert.description}`, 14, y + 18);
+    });
+
+    doc.save(`${currentHazard}_Alert_Report.pdf`);
   };
 
   return (
     <button
-      onClick={handleGenerateReport}
+      onClick={generateReport}
       style={{
-        width: '100%',
-        padding: '12px',
-        backgroundColor: '#d9534f',
-        color: 'white',
+        marginTop: '10px',
+        padding: '8px 12px',
+        borderRadius: '6px',
         border: 'none',
-        borderRadius: '4px',
-        fontSize: '16px',
+        background: '#1976d2',
+        color: '#fff',
         cursor: 'pointer',
-        marginTop: '20px'
       }}
     >
       Generate Briefing Report

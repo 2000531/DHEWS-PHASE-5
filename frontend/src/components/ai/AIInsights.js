@@ -1,52 +1,52 @@
-import React, { useState, useEffect } from 'react';
-import { getAIAnalysis } from '../../services/api';
-import './AIInsights.css'; // Add styling
+import React, { useEffect, useState } from 'react';
+import './AIInsights.css';
+
+const mockInsights = {
+  Drought: [
+    { title: 'Agricultural Alert', details: 'VCI is low; crops may be stressed.' },
+    { title: 'Soil Moisture', details: 'Soil moisture levels are below normal.' },
+  ],
+  Flood: [
+    { title: 'Flood Watch', details: 'Heavy rainfall predicted; rivers rising.' },
+    { title: 'Infrastructure Risk', details: 'Low-lying roads may be submerged.' },
+  ],
+};
 
 function AIInsights({ selectedHazard, metrics }) {
-  const [analysis, setAnalysis] = useState(null);
+  const [insights, setInsights] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!selectedHazard || !metrics) return;
-
     setLoading(true);
-    getAIAnalysis(selectedHazard, metrics).then(data => {
-      setAnalysis(data);
+    // Simulate async fetch with mock data
+    setTimeout(() => {
+      setInsights(mockInsights[selectedHazard] || []);
       setLoading(false);
-    });
-  }, [selectedHazard, metrics]); // Re-run this effect when hazard or metrics change
+    }, 500); // half-second delay
+  }, [selectedHazard]);
 
   if (loading) {
-    return <div className="ai-insights-container loading">🧠 Analyzing data...</div>;
+    return <div className="ai-insights-container loading">Loading AI insights...</div>;
   }
-
-  if (!analysis) return null;
 
   return (
     <div className="ai-insights-container">
-      <h3>💡 AI Analysis & Recommendations</h3>
-
+      <h3>AI Insights - {selectedHazard}</h3>
+      {insights.map((insight, index) => (
+        <div className="insight-section" key={index}>
+          <h4>{insight.title}</h4>
+          <p>{insight.details}</p>
+        </div>
+      ))}
       <div className="insight-section">
-        <h4>Summary</h4>
-        <p>{analysis.summary}</p>
-      </div>
-
-      <div className="insight-section">
-        <h4>Predicted Impact</h4>
-        <p>{analysis.impact}</p>
-      </div>
-      
-      <div className="insight-section">
-        <h4>7-Day Forecast</h4>
-        <p>{analysis.forecast}</p>
-      </div>
-
-      <div className="insight-section">
-        <h4>Actionable Recommendations</h4>
+        <h4>Metrics Summary</h4>
         <ul>
-          {analysis.recommendations.map((rec, index) => (
-            <li key={index}>{rec}</li>
-          ))}
+          {metrics &&
+            Object.entries(metrics).map(([key, value], index) => (
+              <li key={index}>
+                {key}: {value}
+              </li>
+            ))}
         </ul>
       </div>
     </div>

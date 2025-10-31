@@ -1,10 +1,4 @@
-
-
 import React, { useState } from 'react';
-
-// Import the new AI component and the data function
-import AIInsights from './components/ai/AIInsights';
-import KeyMetrics, { getMetricsForHazard } from './components/datadisplay/KeyMetrics';
 
 import Header from './components/layout/Header';
 import HazardSelector from './components/controls/HazardSelector';
@@ -13,37 +7,40 @@ import FilterMenu from './components/controls/FilterMenu';
 import InteractiveMap from './components/map/InteractiveMap';
 import AlertHistoryLog from './components/alerts/AlertHistoryLog';
 import ReportButton from './components/alerts/ReportButton';
+import KeyMetrics, { getMetricsForHazard } from './components/datadisplay/KeyMetrics';
+import AIInsights from './components/ai/AIInsights';
 
 import './assets/styles.css';
 
 function App() {
   const [hazard, setHazard] = useState('Drought'); // 'Drought' or 'Flood'
+  const [currentAlerts, setCurrentAlerts] = useState([]);
 
-  // Get the current metrics data for the selected hazard
+  // Use the correct exported function
   const currentMetrics = getMetricsForHazard(hazard);
 
   return (
     <div className="app-container">
       <Header />
 
-      {/* Left Sidebar (Control Panel) -*/}
+      {/* Left Sidebar */}
       <aside className="sidebar sidebar-left">
         <h2>Controls</h2>
         <HazardSelector selectedHazard={hazard} onHazardChange={setHazard} />
         <HistoricalSlider />
         <FilterMenu />
-        <ReportButton currentHazard={hazard} />
+        <ReportButton currentHazard={hazard} alerts={currentAlerts} />
       </aside>
 
-      {/* Main Center Pane  */}
+      {/* Main Center Pane */}
       <main className="main-content" style={{ display: 'flex', flexDirection: 'column' }}>
         <div style={{ flex: 1, minHeight: 0 }}>
           <InteractiveMap selectedHazard={hazard} />
         </div>
-        <AlertHistoryLog />
+        <AlertHistoryLog selectedHazard={hazard} setParentAlerts={setCurrentAlerts} />
       </main>
 
-      {/* Right Sidebar (Data Details) */}
+      {/* Right Sidebar */}
       <aside className="sidebar sidebar-right">
         <h2>Data Details</h2>
         <KeyMetrics selectedHazard={hazard} />
@@ -54,3 +51,4 @@ function App() {
 }
 
 export default App;
+
