@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_migrate import Migrate
 from flask_cors import CORS
+
 from config import Config
 from models import db
 from routes import api
@@ -14,4 +15,4 @@ CORS(app)
 app.register_blueprint(api, url_prefix="/api")
 
 if __name__ == "__main__":
-    app.run(app, debug=True)
+    app.run(debug=True)
